@@ -50,6 +50,7 @@ function Unprotect-ApiKey([string]$cipherText) {
 function Show-DeviceEditor($owner, $existing) {
     [xml]$editorXaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="搬瓦工监控配置" Width="430" Height="330" WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize" Background="#F7FAFB">
   <Grid Margin="22">
@@ -99,11 +100,70 @@ function Show-DeviceEditor($owner, $existing) {
     return $result
 }
 
+function Show-ManageChoice($owner) {
+    [xml]$choiceXaml = @'
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="设备管理" Width="360" Height="205" WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
+  <Border CornerRadius="20" Background="#FCFFFFFF" BorderBrush="#334CC6D4" BorderThickness="1" Padding="24">
+    <Border.Effect><DropShadowEffect Color="#44000000" BlurRadius="22" ShadowDepth="5"/></Border.Effect>
+    <Grid>
+      <Grid.RowDefinitions><RowDefinition/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <TextBlock Text="管理监控设备" FontSize="19" FontWeight="Bold" Foreground="#17343A"/>
+      <TextBlock Grid.Row="1" Text="编辑当前设备，或添加另一台搬瓦工 VPS。" Foreground="#65777B" Margin="0,8,0,20"/>
+      <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button x:Name="Cancel" Content="取消" Width="76" Height="34" Margin="0,0,8,0" Background="#EEF3F4" BorderThickness="0"/>
+        <Button x:Name="Edit" Content="编辑当前" Width="90" Height="34" Margin="0,0,8,0" Background="#DDF4F6" Foreground="#23666D" BorderThickness="0"/>
+        <Button x:Name="Add" Content="添加设备" Width="90" Height="34" Background="#4CC6D4" Foreground="White" BorderThickness="0"/>
+      </StackPanel>
+    </Grid>
+  </Border>
+</Window>
+'@
+    $reader = New-Object System.Xml.XmlNodeReader $choiceXaml
+    $dialog = [Windows.Markup.XamlReader]::Load($reader); $dialog.Owner = $owner
+    $result = $null
+    $dialog.FindName('Cancel').Add_Click({ $dialog.DialogResult = $false })
+    $dialog.FindName('Edit').Add_Click({ $script:manageChoice = 'edit'; $dialog.DialogResult = $true })
+    $dialog.FindName('Add').Add_Click({ $script:manageChoice = 'add'; $dialog.DialogResult = $true })
+    if ($dialog.ShowDialog()) { $result = $script:manageChoice; $script:manageChoice = $null }
+    return $result
+}
+
 [xml]$xaml = @'
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="BandwagonHost Monitor" Width="270" Height="330" WindowStyle="None"
         AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize"
         ShowInTaskbar="True" Topmost="True">
+  <Window.Resources>
+    <Style x:Key="RoundAction" TargetType="Button">
+      <Setter Property="Width" Value="38"/><Setter Property="Height" Value="38"/>
+      <Setter Property="Margin" Value="5,0"/><Setter Property="FontSize" Value="18"/>
+      <Setter Property="Foreground" Value="#315D63"/><Setter Property="Background" Value="#F1F7F8"/>
+      <Setter Property="BorderBrush" Value="#224CC6D4"/><Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="Chrome" CornerRadius="19" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#DDF4F6"/><Setter Property="Foreground" Value="#14727C"/></Trigger>
+              <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#BFE8EC"/></Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.45"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="CloseAction" TargetType="Button" BasedOn="{StaticResource RoundAction}">
+      <Setter Property="Foreground" Value="#A84E57"/><Setter Property="Background" Value="#FFF5F5"/><Setter Property="BorderBrush" Value="#33D2606C"/>
+    </Style>
+  </Window.Resources>
   <Border x:Name="Card" Margin="9" CornerRadius="24" Background="#F7FFFFFF" BorderBrush="#33087E8B" BorderThickness="1">
     <Border.Effect><DropShadowEffect Color="#55000000" BlurRadius="18" ShadowDepth="4" Opacity="0.5"/></Border.Effect>
     <Grid Margin="16,13,16,15">
@@ -120,9 +180,9 @@ function Show-DeviceEditor($owner, $existing) {
       <TextBlock x:Name="RemainingText" Grid.Row="5" Text="剩余 -- GB" TextAlignment="Center" FontSize="12" Foreground="#4B6267"/>
       <TextBlock x:Name="ResetText" Grid.Row="6" Text="下次重置：---- -- --" TextAlignment="Center" FontSize="11" Foreground="#6B7D81"/>
       <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,9,0,0">
-        <Button x:Name="RefreshButton" Content="刷新" Width="64" Height="28" Margin="0,0,8,0"/>
-        <Button x:Name="ManageButton" Content="设备" Width="64" Height="28" Margin="0,0,8,0"/>
-        <Button x:Name="CloseButton" Content="关闭" Width="64" Height="28"/>
+        <Button x:Name="RefreshButton" Content="↻" Style="{StaticResource RoundAction}" ToolTip="立即刷新"/>
+        <Button x:Name="ManageButton" Content="⚙" Style="{StaticResource RoundAction}" ToolTip="管理设备"/>
+        <Button x:Name="CloseButton" Content="×" Style="{StaticResource CloseAction}" ToolTip="关闭"/>
       </StackPanel>
     </Grid>
   </Border>
@@ -204,9 +264,9 @@ function Update-Monitor {
 }
 
 function Manage-Devices {
-    $choice = [System.Windows.MessageBox]::Show("选择“是”编辑当前设备，选择“否”添加新设备。",'设备管理','YesNoCancel','Question')
-    if ($choice -eq 'Cancel') { return }
-    $existing = if ($choice -eq 'Yes') { Get-ActiveDevice } else { $null }
+    $choice = Show-ManageChoice $window
+    if (-not $choice) { return }
+    $existing = if ($choice -eq 'edit') { Get-ActiveDevice } else { $null }
     $edited = Show-DeviceEditor $window $existing
     if (-not $edited) { return }
     $devices = [System.Collections.ArrayList]@($script:config.devices)
