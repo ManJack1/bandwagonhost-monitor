@@ -1,0 +1,7 @@
+config.json
+credential.dat
+*.log
+pet-cache.json
+state.json
+.DS_Store
+Thumbs.db
