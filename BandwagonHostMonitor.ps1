@@ -138,6 +138,67 @@ function Show-ManageChoice($owner) {
         AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize"
         ShowInTaskbar="True" Topmost="True">
   <Window.Resources>
+    <Style x:Key="DeviceItem" TargetType="ComboBoxItem">
+      <Setter Property="Padding" Value="12,8"/>
+      <Setter Property="Foreground" Value="#294B50"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBoxItem">
+            <Border x:Name="ItemBorder" Margin="4,2" Padding="{TemplateBinding Padding}" CornerRadius="9" Background="{TemplateBinding Background}">
+              <ContentPresenter/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#DDF4F6"/></Trigger>
+              <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#C6ECF0"/><Setter Property="FontWeight" Value="SemiBold"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="DevicePicker" TargetType="ComboBox">
+      <Setter Property="Foreground" Value="#294B50"/>
+      <Setter Property="Background" Value="#F0F7F8"/>
+      <Setter Property="BorderBrush" Value="#3A9BA5"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="12,0"/>
+      <Setter Property="ItemContainerStyle" Value="{StaticResource DeviceItem}"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBox">
+            <Grid>
+              <ToggleButton x:Name="PickerButton" Focusable="False" ClickMode="Press"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                <ToggleButton.Template>
+                  <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="PickerBorder" CornerRadius="12" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                      <Grid Margin="12,0,10,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="24"/></Grid.ColumnDefinitions>
+                        <ContentPresenter Grid.Column="0" VerticalAlignment="Center" Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+                        <Path Grid.Column="1" Width="9" Height="5" HorizontalAlignment="Right" VerticalAlignment="Center"
+                              Fill="#47747A" Data="M 0 0 L 4.5 5 L 9 0 Z"/>
+                      </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PickerBorder" Property="Background" Value="#E4F4F5"/></Trigger>
+                      <Trigger Property="IsChecked" Value="True"><Setter TargetName="PickerBorder" Property="BorderBrush" Value="#4CC6D4"/><Setter TargetName="PickerBorder" Property="Background" Value="#EAF8F9"/></Trigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </ToggleButton.Template>
+              </ToggleButton>
+              <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" PopupAnimation="Fade" Focusable="False">
+                <Border Width="220" Margin="0,6,0,0" Padding="4" CornerRadius="13" Background="#FFFFFFFF" BorderBrush="#334CC6D4" BorderThickness="1">
+                  <Border.Effect><DropShadowEffect Color="#33000000" BlurRadius="16" ShadowDepth="3"/></Border.Effect>
+                  <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto"><ItemsPresenter/></ScrollViewer>
+                </Border>
+              </Popup>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
     <Style x:Key="RoundAction" TargetType="Button">
       <Setter Property="Width" Value="38"/><Setter Property="Height" Value="38"/>
       <Setter Property="Margin" Value="5,0"/><Setter Property="FontSize" Value="18"/>
@@ -172,7 +233,8 @@ function Show-ManageChoice($owner) {
         <RowDefinition Height="22"/><RowDefinition Height="24"/><RowDefinition Height="22"/>
         <RowDefinition Height="22"/><RowDefinition Height="*"/>
       </Grid.RowDefinitions>
-      <ComboBox x:Name="DeviceBox" Grid.Row="0" Height="28" VerticalAlignment="Top" DisplayMemberPath="name" SelectedValuePath="id"/>
+      <ComboBox x:Name="DeviceBox" Grid.Row="0" Height="32" VerticalAlignment="Top" DisplayMemberPath="name" SelectedValuePath="id"
+                Style="{StaticResource DevicePicker}"/>
       <Image x:Name="BrandLogo" Grid.Row="1" Width="180" Height="48" Stretch="Uniform"/>
       <TextBlock x:Name="StatusText" Grid.Row="2" Text="等待配置" TextAlignment="Center" FontWeight="SemiBold" Foreground="#4CC6D4"/>
       <TextBlock x:Name="PercentText" Grid.Row="3" Text="--%" FontSize="20" FontWeight="Bold" TextAlignment="Center" Foreground="#17343A"/>
