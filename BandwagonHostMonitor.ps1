@@ -140,7 +140,7 @@ function Show-ManageChoice($owner) {
   <Window.Resources>
     <Style x:Key="DeviceItem" TargetType="ComboBoxItem">
       <Setter Property="Padding" Value="12,8"/>
-      <Setter Property="Foreground" Value="#294B50"/>
+      <Setter Property="Foreground" Value="#E5ECEE"/>
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
       <Setter Property="Template">
@@ -150,17 +150,17 @@ function Show-ManageChoice($owner) {
               <ContentPresenter/>
             </Border>
             <ControlTemplate.Triggers>
-              <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#DDF4F6"/></Trigger>
-              <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#C6ECF0"/><Setter Property="FontWeight" Value="SemiBold"/></Trigger>
+              <Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#39444A"/></Trigger>
+              <Trigger Property="IsSelected" Value="True"><Setter TargetName="ItemBorder" Property="Background" Value="#28545B"/><Setter Property="FontWeight" Value="SemiBold"/></Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
     </Style>
     <Style x:Key="DevicePicker" TargetType="ComboBox">
-      <Setter Property="Foreground" Value="#294B50"/>
-      <Setter Property="Background" Value="#F0F7F8"/>
-      <Setter Property="BorderBrush" Value="#3A9BA5"/>
+      <Setter Property="Foreground" Value="#E5ECEE"/>
+      <Setter Property="Background" Value="#292F34"/>
+      <Setter Property="BorderBrush" Value="#536268"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Padding" Value="12,0"/>
       <Setter Property="ItemContainerStyle" Value="{StaticResource DeviceItem}"/>
@@ -179,18 +179,18 @@ function Show-ManageChoice($owner) {
                         <TextBlock Grid.Column="0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                    Text="{Binding SelectedItem.name, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
                         <Path Grid.Column="1" Width="9" Height="5" HorizontalAlignment="Right" VerticalAlignment="Center"
-                              Fill="#47747A" Data="M 0 0 L 4.5 5 L 9 0 Z"/>
+                              Fill="#80CBD2" Data="M 0 0 L 4.5 5 L 9 0 Z"/>
                       </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PickerBorder" Property="Background" Value="#E4F4F5"/></Trigger>
-                      <Trigger Property="IsChecked" Value="True"><Setter TargetName="PickerBorder" Property="BorderBrush" Value="#4CC6D4"/><Setter TargetName="PickerBorder" Property="Background" Value="#EAF8F9"/></Trigger>
+                      <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="PickerBorder" Property="Background" Value="#343D42"/></Trigger>
+                      <Trigger Property="IsChecked" Value="True"><Setter TargetName="PickerBorder" Property="BorderBrush" Value="#4CC6D4"/><Setter TargetName="PickerBorder" Property="Background" Value="#303A3F"/></Trigger>
                     </ControlTemplate.Triggers>
                   </ControlTemplate>
                 </ToggleButton.Template>
               </ToggleButton>
               <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" PopupAnimation="Fade" Focusable="False">
-                <Border Width="220" Margin="0,6,0,0" Padding="4" CornerRadius="13" Background="#FFFFFFFF" BorderBrush="#334CC6D4" BorderThickness="1">
+                <Border Width="220" Margin="0,6,0,0" Padding="4" CornerRadius="13" Background="#F52A3035" BorderBrush="#664CC6D4" BorderThickness="1">
                   <Border.Effect><DropShadowEffect Color="#33000000" BlurRadius="16" ShadowDepth="3"/></Border.Effect>
                   <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto"><ItemsPresenter/></ScrollViewer>
                 </Border>
@@ -203,8 +203,8 @@ function Show-ManageChoice($owner) {
     <Style x:Key="RoundAction" TargetType="Button">
       <Setter Property="Width" Value="38"/><Setter Property="Height" Value="38"/>
       <Setter Property="Margin" Value="5,0"/><Setter Property="FontSize" Value="18"/>
-      <Setter Property="Foreground" Value="#315D63"/><Setter Property="Background" Value="#F1F7F8"/>
-      <Setter Property="BorderBrush" Value="#224CC6D4"/><Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Foreground" Value="#BFDDE0"/><Setter Property="Background" Value="#293238"/>
+      <Setter Property="BorderBrush" Value="#3D5960"/><Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Cursor" Value="Hand"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -214,8 +214,8 @@ function Show-ManageChoice($owner) {
               <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
             </Border>
             <ControlTemplate.Triggers>
-              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#DDF4F6"/><Setter Property="Foreground" Value="#14727C"/></Trigger>
-              <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#BFE8EC"/></Trigger>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#35525A"/><Setter Property="Foreground" Value="#75E0E9"/></Trigger>
+              <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Background" Value="#28464D"/></Trigger>
               <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.45"/></Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -223,10 +223,10 @@ function Show-ManageChoice($owner) {
       </Setter>
     </Style>
     <Style x:Key="CloseAction" TargetType="Button" BasedOn="{StaticResource RoundAction}">
-      <Setter Property="Foreground" Value="#A84E57"/><Setter Property="Background" Value="#FFF5F5"/><Setter Property="BorderBrush" Value="#33D2606C"/>
+      <Setter Property="Foreground" Value="#F19AA2"/><Setter Property="Background" Value="#3A292D"/><Setter Property="BorderBrush" Value="#665E3C43"/>
     </Style>
   </Window.Resources>
-  <Border x:Name="Card" Margin="9" CornerRadius="24" Background="#F7FFFFFF" BorderBrush="#33087E8B" BorderThickness="1">
+  <Border x:Name="Card" Margin="9" CornerRadius="24" Background="#F21B1F24" BorderBrush="#66536168" BorderThickness="1">
     <Border.Effect><DropShadowEffect Color="#55000000" BlurRadius="18" ShadowDepth="4" Opacity="0.5"/></Border.Effect>
     <Grid Margin="16,13,16,15">
       <Grid.RowDefinitions>
@@ -238,10 +238,10 @@ function Show-ManageChoice($owner) {
                 Style="{StaticResource DevicePicker}"/>
       <Image x:Name="BrandLogo" Grid.Row="1" Width="180" Height="48" Stretch="Uniform"/>
       <TextBlock x:Name="StatusText" Grid.Row="2" Text="等待配置" TextAlignment="Center" FontWeight="SemiBold" Foreground="#4CC6D4"/>
-      <TextBlock x:Name="PercentText" Grid.Row="3" Text="--%" FontSize="20" FontWeight="Bold" TextAlignment="Center" Foreground="#17343A"/>
-      <ProgressBar x:Name="UsageBar" Grid.Row="4" Height="9" Minimum="0" Maximum="100" Foreground="#4CC6D4" Background="#1A17343A" BorderThickness="0"/>
-      <TextBlock x:Name="RemainingText" Grid.Row="5" Text="剩余 -- GB" TextAlignment="Center" FontSize="12" Foreground="#4B6267"/>
-      <TextBlock x:Name="ResetText" Grid.Row="6" Text="下次重置：---- -- --" TextAlignment="Center" FontSize="11" Foreground="#6B7D81"/>
+      <TextBlock x:Name="PercentText" Grid.Row="3" Text="--%" FontSize="20" FontWeight="Bold" TextAlignment="Center" Foreground="#F1F5F6"/>
+      <ProgressBar x:Name="UsageBar" Grid.Row="4" Height="9" Minimum="0" Maximum="100" Foreground="#4CC6D4" Background="#344047" BorderThickness="0"/>
+      <TextBlock x:Name="RemainingText" Grid.Row="5" Text="剩余 -- GB" TextAlignment="Center" FontSize="12" Foreground="#C2CDD0"/>
+      <TextBlock x:Name="ResetText" Grid.Row="6" Text="下次重置：---- -- --" TextAlignment="Center" FontSize="11" Foreground="#8F9FA3"/>
       <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,9,0,0">
         <Button x:Name="RefreshButton" Content="↻" Style="{StaticResource RoundAction}" ToolTip="立即刷新"/>
         <Button x:Name="ManageButton" Content="⚙" Style="{StaticResource RoundAction}" ToolTip="管理设备"/>
