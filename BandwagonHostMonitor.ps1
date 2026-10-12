@@ -312,7 +312,7 @@ function Update-Monitor {
         if ([int]$response.error -ne 0) { throw "KiwiVM API：$($response.message)" }
         $multiplier=[double]$response.monthly_data_multiplier; if ($multiplier -le 0) { $multiplier=1 }
         $used=[double]$response.data_counter*$multiplier; $limit=[double]$response.plan_monthly_data*$multiplier
-        $remaining=[Math]::Max(0,$limit-$used); $percent=if($limit -gt 0){$used/$limit*100}else{0}
+        $remaining=[Math]::Max([double]0,[double]($limit-$used)); $percent=if($limit -gt 0){$used/$limit*100}else{0}
         $reset=[DateTimeOffset]::FromUnixTimeSeconds([long]$response.data_next_reset).ToLocalTime()
         $percentText.Text=('{0:N2}%' -f $percent); $usageBar.Value=[Math]::Min(100,$percent)
         $remainingText.Text=('剩余 {0:N2} GB' -f ($remaining/1GB)); $resetText.Text=('下次重置：{0:yyyy-MM-dd}' -f $reset)
