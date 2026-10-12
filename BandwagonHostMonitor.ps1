@@ -176,7 +176,8 @@ function Show-ManageChoice($owner) {
                             BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                       <Grid Margin="12,0,10,0">
                         <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="24"/></Grid.ColumnDefinitions>
-                        <ContentPresenter Grid.Column="0" VerticalAlignment="Center" Content="{Binding SelectionBoxItem, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
+                        <TextBlock Grid.Column="0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   Text="{Binding SelectedItem.name, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
                         <Path Grid.Column="1" Width="9" Height="5" HorizontalAlignment="Right" VerticalAlignment="Center"
                               Fill="#47747A" Data="M 0 0 L 4.5 5 L 9 0 Z"/>
                       </Grid>
