@@ -172,11 +172,14 @@ function Show-ManageChoice($owner) {
                             IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                 <ToggleButton.Template>
                   <ControlTemplate TargetType="ToggleButton">
-                    <Border x:Name="PickerBorder" CornerRadius="12" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border x:Name="PickerBorder" CornerRadius="12"
+                            Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                            BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                            BorderThickness="{Binding BorderThickness, RelativeSource={RelativeSource AncestorType=ComboBox}}">
                       <Grid Margin="12,0,10,0">
                         <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="24"/></Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ComboBox}}"
                                    Text="{Binding SelectedItem.name, RelativeSource={RelativeSource AncestorType=ComboBox}}"/>
                         <Path Grid.Column="1" Width="9" Height="5" HorizontalAlignment="Right" VerticalAlignment="Center"
                               Fill="#80CBD2" Data="M 0 0 L 4.5 5 L 9 0 Z"/>
